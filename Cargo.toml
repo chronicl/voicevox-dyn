@@ -1,7 +1,10 @@
 [package]
 name = "voicevox-dyn"
+description = "dynamically load and run voicevox from rust"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+repository = "https://github.com/chronicl/voicevox-dyn"
 
 [dependencies]
 libloading = "0.8.0"
