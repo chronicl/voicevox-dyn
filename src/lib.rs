@@ -64,7 +64,10 @@ impl VoiceVox {
         args: impl IntoIterator<Item = S>,
     ) -> color_eyre::Result<Self> {
         let exe_path = download_path()?;
+        // by default for windows
         let dll = exe_path.join("voicevox_core.dll");
+        #[cfg(target_family = "unix")]
+        let dll = exe_path.join("libvoicevox_core.dylib");
 
         if !dll.exists() {
             // get the downloader
@@ -73,6 +76,13 @@ impl VoiceVox {
             let downloader_path = exe_path.join("voicevox_downloader");
             let file = std::fs::File::create(&downloader_path)?;
             std::io::copy(&mut reader, &mut std::io::BufWriter::new(file))?;
+
+            #[cfg(target_family = "unix")]
+            std::process::Command::new("chmod")
+                .arg("+x")
+                .arg(&downloader_path)
+                .output()
+                .unwrap();
 
             // use the downloader
             let mut child = std::process::Command::new(downloader_path)
