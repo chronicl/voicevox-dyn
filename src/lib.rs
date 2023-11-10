@@ -64,10 +64,12 @@ impl VoiceVox {
         args: impl IntoIterator<Item = S>,
     ) -> color_eyre::Result<Self> {
         let exe_path = download_path()?;
-        // by default for windows
+        #[cfg(target_os = "windows")]
         let dll = exe_path.join("voicevox_core.dll");
-        #[cfg(target_family = "unix")]
+        #[cfg(target_os = "macos")]
         let dll = exe_path.join("libvoicevox_core.dylib");
+        #[cfg(target_os = "linux")]
+        let dll = exe_path.join("libvoicevox_core.so");
 
         if !dll.exists() {
             // get the downloader

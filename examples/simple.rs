@@ -13,7 +13,7 @@ fn main() -> color_eyre::Result<()> {
     vv.load_model(SPEAKER_ID)?;
 
     let now = std::time::Instant::now();
-    let wav = vv.tts("こんにちは", SPEAKER_ID, Default::default())?;
+    let wav = vv.tts("ステキだね", SPEAKER_ID, Default::default())?;
     info!("tts took {:?}", now.elapsed());
 
     std::fs::write("audio.wav", wav.as_slice())?;
